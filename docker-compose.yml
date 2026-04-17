@@ -12,6 +12,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - internal
 
   chavenamao:
     build:
@@ -63,6 +65,7 @@ services:
       php artisan storage:link || true &&
       apache2-foreground"
     networks:
+      - internal
       - stack_nginx-proxy
 
 volumes:
@@ -71,5 +74,6 @@ volumes:
   laravel_logs:
 
 networks:
+  internal:
   stack_nginx-proxy:
     external: true
