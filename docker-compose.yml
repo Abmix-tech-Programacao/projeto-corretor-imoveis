@@ -9,7 +9,6 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-CorretorApp_2026!}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-CorretorApp_2026!}
       TZ: America/Sao_Paulo
-    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
