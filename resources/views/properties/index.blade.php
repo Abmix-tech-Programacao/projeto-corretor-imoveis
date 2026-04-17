@@ -1,0 +1,122 @@
+@extends('layouts.app')
+
+@section('title', 'Imóveis | Chave na Mão')
+
+@section('content')
+    <section class="section">
+        <div class="container listing-layout">
+            <aside class="filter-panel">
+                <h2>Filtros</h2>
+                <form action="{{ route('properties.index') }}" method="GET">
+                    @if (!empty($filters['menu_category']))
+                        <input type="hidden" name="menu_category" value="{{ $filters['menu_category'] }}">
+                    @endif
+                    <label>
+                        Busca
+                        <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Título, bairro, cidade">
+                    </label>
+                    @include('partials.location-selects')
+                    <label>
+                        Finalidade
+                        <select name="purpose">
+                            <option value="">Todas</option>
+                            @foreach ($filterOptions['purposes'] as $purpose)
+                                <option value="{{ $purpose['value'] }}" @selected(($filters['purpose'] ?? '') === $purpose['value'])>
+                                    {{ $purpose['label'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label>
+                        Quartos
+                        <select name="bedrooms">
+                            <option value="">Qualquer</option>
+                            @foreach ($filterOptions['bedroom_options'] as $bedroomOption)
+                                <option value="{{ $bedroomOption }}" @selected((string) ($filters['bedrooms'] ?? '') === (string) $bedroomOption)>
+                                    {{ $bedroomOption }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label>
+                        Banheiros
+                        <select name="bathrooms">
+                            <option value="">Qualquer</option>
+                            @foreach ($filterOptions['bathroom_options'] as $bathroomOption)
+                                <option value="{{ $bathroomOption }}" @selected((string) ($filters['bathrooms'] ?? '') === (string) $bathroomOption)>
+                                    {{ $bathroomOption }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label>
+                        Tipo do Imóvel
+                        <select name="property_type">
+                            <option value="">Todos</option>
+                            @foreach ($filterOptions['types'] as $type)
+                                <option value="{{ $type['value'] }}" @selected(($filters['property_type'] ?? '') === $type['value'])>
+                                    {{ $type['label'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label>
+                        Faixa de Preço
+                        <select name="price_range">
+                            <option value="">Todas</option>
+                            @foreach ($filterOptions['price_ranges'] as $rangeOption)
+                                <option value="{{ $rangeOption['value'] }}" @selected(($filters['price_range'] ?? '') === $rangeOption['value'])>
+                                    {{ $rangeOption['label'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <label>
+                        Preço mínimo
+                        <input type="number" step="1000" name="min_price" value="{{ $filters['min_price'] ?? '' }}">
+                    </label>
+                    <label>
+                        Preço máximo
+                        <input type="number" step="1000" name="max_price" value="{{ $filters['max_price'] ?? '' }}">
+                    </label>
+                    <button type="submit" class="btn btn-primary w-full">Aplicar filtros</button>
+                    <a href="{{ route('properties.index') }}" class="btn btn-ghost w-full">Limpar</a>
+                </form>
+            </aside>
+            <div>
+                @php
+                    $whatsMessage = rawurlencode('Ola! Vim pela pagina de imoveis e quero atendimento.');
+                @endphp
+                <div class="broker-banner">
+                    <div class="broker-banner-head">
+                        <p class="broker-banner-eyebrow">Corretor responsavel</p>
+                        <strong>Euclides</strong>
+                        <small>Atendimento rapido para compra e aluguel.</small>
+                    </div>
+                    <div class="broker-contact-actions">
+                        <a class="broker-contact-link is-whatsapp" href="https://wa.me/5511983775679?text={{ $whatsMessage }}" target="_blank" rel="noopener noreferrer">
+                            Falar no WhatsApp
+                        </a>
+                        <a class="broker-contact-link" href="mailto:euclides@chavenamao.company">
+                            Enviar e-mail
+                        </a>
+                    </div>
+                </div>
+                <div class="section-head">
+                    <h1>Imóveis disponíveis</h1>
+                    <small>{{ $properties->total() }} resultados</small>
+                </div>
+                <div class="property-grid">
+                    @forelse ($properties as $property)
+                        @include('partials.property-card', ['property' => $property])
+                    @empty
+                        <p>Nenhum imóvel encontrado.</p>
+                    @endforelse
+                </div>
+                <div class="pagination-wrap">
+                    {{ $properties->links() }}
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
