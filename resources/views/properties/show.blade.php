@@ -4,7 +4,13 @@
 
 @section('content')
     @php
-        $whatsMessage = rawurlencode('Ola! Tenho interesse no imovel '.$property->title.'.');
+        $whatsMessage = rawurlencode('Olá! Tenho interesse no imóvel '.$property->title.'.');
+        $mapQuery = trim(implode(', ', array_filter([
+            $property->address,
+            $property->neighborhood,
+            $property->city,
+            $property->state,
+        ])));
     @endphp
     <section class="section">
         <div class="container details-layout">
@@ -62,12 +68,22 @@
                             src="https://www.openstreetmap.org/export/embed.html?bbox={{ $property->longitude - 0.01 }}%2C{{ $property->latitude - 0.01 }}%2C{{ $property->longitude + 0.01 }}%2C{{ $property->latitude + 0.01 }}&layer=mapnik&marker={{ $property->latitude }}%2C{{ $property->longitude }}">
                         </iframe>
                     </article>
+                @elseif ($mapQuery !== '')
+                    <article class="content-card">
+                        <h2>Mapa</h2>
+                        <iframe
+                            title="Mapa por endereço"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            src="https://www.google.com/maps?q={{ urlencode($mapQuery) }}&output=embed">
+                        </iframe>
+                    </article>
                 @endif
             </div>
 
             <aside class="details-sidebar">
                 <div class="broker-inline">
-                    <small>Corretor responsavel</small>
+                    <small>Corretor responsável</small>
                     <strong>Euclides</strong>
                     <div class="broker-contact-actions">
                         <a class="broker-contact-link is-whatsapp" href="https://wa.me/5511983775679?text={{ $whatsMessage }}" target="_blank" rel="noopener noreferrer">

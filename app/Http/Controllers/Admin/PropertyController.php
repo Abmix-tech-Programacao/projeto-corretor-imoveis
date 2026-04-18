@@ -161,6 +161,8 @@ class PropertyController extends Controller
         $features = $this->normalizeFeatureText($validated['features_text'] ?? null);
         $locationId = isset($validated['location_id']) ? (int) $validated['location_id'] : null;
         $locationContext = LocationHierarchy::resolvePropertyContext($locationId);
+        $manualCity = trim((string) ($validated['city'] ?? ''));
+        $manualNeighborhood = trim((string) ($validated['neighborhood'] ?? ''));
 
         return [
             'title' => $validated['title'],
@@ -169,10 +171,10 @@ class PropertyController extends Controller
             'property_type' => $validated['property_type'],
             'purpose' => $validated['purpose'],
             'menu_category' => $validated['menu_category'] ?? null,
-            'city' => $locationContext['city'] ?? ($validated['city'] ?? null),
+            'city' => $manualCity !== '' ? $manualCity : ($locationContext['city'] ?? null),
             'state' => Str::upper($validated['state']),
             'location_id' => $locationId,
-            'neighborhood' => $locationContext['neighborhood'] ?? ($validated['neighborhood'] ?? null),
+            'neighborhood' => $manualNeighborhood !== '' ? $manualNeighborhood : ($locationContext['neighborhood'] ?? null),
             'address' => $validated['address'] ?? null,
             'price' => $validated['price'] ?? null,
             'bedrooms' => $validated['bedrooms'],

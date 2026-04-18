@@ -149,13 +149,21 @@ const propertyCityPreview = document.querySelector('[data-property-city-preview]
 const propertyNeighborhoodPreview = document.querySelector('[data-property-neighborhood-preview]');
 
 if (propertyLocationSelect && propertyCityPreview && propertyNeighborhoodPreview) {
+    let lastAutoNeighborhood = propertyNeighborhoodPreview.value || '';
+
     const syncPropertyLocationPreview = () => {
         const selectedOption = propertyLocationSelect.options[propertyLocationSelect.selectedIndex];
         const city = selectedOption ? selectedOption.dataset.city || '' : '';
         const neighborhood = selectedOption ? selectedOption.dataset.neighborhood || '' : '';
 
         propertyCityPreview.value = city;
-        propertyNeighborhoodPreview.value = neighborhood;
+
+        const currentNeighborhood = (propertyNeighborhoodPreview.value || '').trim();
+        if (currentNeighborhood === '' || currentNeighborhood === lastAutoNeighborhood) {
+            propertyNeighborhoodPreview.value = neighborhood;
+        }
+
+        lastAutoNeighborhood = neighborhood;
     };
 
     propertyLocationSelect.addEventListener('change', syncPropertyLocationPreview);

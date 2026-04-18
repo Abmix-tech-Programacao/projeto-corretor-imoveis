@@ -73,22 +73,24 @@
             <input type="text" name="state" value="{{ old('state', $property->state ?? 'SP') }}" maxlength="2" required>
         </label>
         <label>
-            Cidade (automatico)
+            Cidade (automática)
             <input
                 type="text"
+                name="city"
                 value="{{ old('city', $selectedLocation['city'] ?? $property->city ?? '') }}"
                 readonly
                 data-property-city-preview
             >
         </label>
         <label>
-            Bairro (automatico)
+            Bairro
             <input
                 type="text"
+                name="neighborhood"
                 value="{{ old('neighborhood', $selectedLocation['neighborhood'] ?? $property->neighborhood ?? '') }}"
-                readonly
                 data-property-neighborhood-preview
             >
+            <small class="inline-hint">Preenchido automaticamente pela localização, mas você pode editar.</small>
         </label>
         <label>
             Endereco
