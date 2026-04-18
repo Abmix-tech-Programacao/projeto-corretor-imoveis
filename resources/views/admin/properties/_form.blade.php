@@ -1,7 +1,7 @@
-﻿@php
+@php
     $editing = isset($property);
     $selectedLocationId = (string) old('location_id', $property->location_id ?? '');
-    $selectedLocation = collect($locationOptions)->firstWhere('id', (int) $selectedLocationId);
+    $cityOptions = collect($locationTree ?? [])->filter(fn (array $node): bool => ((int) ($node['depth'] ?? 0)) === 0)->values();
 @endphp
 
 <section class="admin-form-section">
@@ -53,31 +53,38 @@
             </select>
         </label>
         <label>
-            Localizacao
-            <select name="location_id" required data-property-location-select>
+            Cidade
+            <select data-property-city-select data-selected-location-id="{{ $selectedLocationId }}" required>
                 <option value="">Selecione</option>
-                @foreach ($locationOptions as $option)
-                    <option
-                        value="{{ $option['id'] }}"
-                        data-city="{{ $option['city'] }}"
-                        data-neighborhood="{{ $option['neighborhood'] }}"
-                        @selected($selectedLocationId === (string) $option['id'])
-                    >
-                        {{ $option['label'] }}
-                    </option>
+                @foreach ($cityOptions as $cityOption)
+                    <option value="{{ $cityOption['id'] }}">{{ $cityOption['name'] }}</option>
                 @endforeach
             </select>
+            <input
+                type="hidden"
+                name="location_id"
+                value="{{ $selectedLocationId }}"
+                data-property-location-id
+                data-property-location-tree='@json($locationTree ?? [])'
+            >
+        </label>
+        <label>
+            Bairro / Regiao
+            <select data-property-neighborhood-select>
+                <option value="">Selecione</option>
+            </select>
+            <small class="inline-hint">Mostra apenas bairros e regioes da cidade selecionada.</small>
         </label>
         <label>
             Estado
             <input type="text" name="state" value="{{ old('state', $property->state ?? 'SP') }}" maxlength="2" required>
         </label>
         <label>
-            Cidade (automática)
+            Cidade (automatica)
             <input
                 type="text"
                 name="city"
-                value="{{ old('city', $selectedLocation['city'] ?? $property->city ?? '') }}"
+                value="{{ old('city', $property->city ?? '') }}"
                 readonly
                 data-property-city-preview
             >
@@ -87,10 +94,10 @@
             <input
                 type="text"
                 name="neighborhood"
-                value="{{ old('neighborhood', $selectedLocation['neighborhood'] ?? $property->neighborhood ?? '') }}"
+                value="{{ old('neighborhood', $property->neighborhood ?? '') }}"
                 data-property-neighborhood-preview
             >
-            <small class="inline-hint">Preenchido automaticamente pela localização, mas você pode editar.</small>
+            <small class="inline-hint">Preenchido automaticamente pela localizacao, mas voce pode editar.</small>
         </label>
         <label>
             Endereco

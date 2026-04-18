@@ -37,7 +37,7 @@ class PropertyController extends Controller
         $menuCategoryOptions = FilterCatalog::menuCategories();
 
         return view('admin.properties.create', [
-            'locationOptions' => LocationHierarchy::optionsForSelect(),
+            'locationTree' => LocationHierarchy::tree(),
             'propertyTypeOptions' => FilterCatalog::propertyTypes(),
             'purposeOptions' => $purposeOptions->isNotEmpty()
                 ? $purposeOptions
@@ -94,7 +94,7 @@ class PropertyController extends Controller
 
         return view('admin.properties.edit', [
             'property' => $property,
-            'locationOptions' => LocationHierarchy::optionsForSelect(),
+            'locationTree' => LocationHierarchy::tree(),
             'propertyTypeOptions' => FilterCatalog::propertyTypes(),
             'purposeOptions' => $purposeOptions->isNotEmpty()
                 ? $purposeOptions
