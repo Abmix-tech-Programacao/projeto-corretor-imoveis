@@ -4,7 +4,7 @@
 
 <section class="admin-form-section">
     <div class="admin-form-section-head">
-        <h2>Dados da opcao</h2>
+        <h2>Dados da opção</h2>
         <p>Use labels claros para o cliente e valores estaveis para o sistema.</p>
     </div>
 
@@ -36,15 +36,15 @@
 
     <label class="checkbox-line">
         <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $option->is_active ?? true))>
-        Opcao ativa
+        Opção ativa
     </label>
 
     @if ($editing)
         <p class="inline-hint">ID: {{ $option->id }}</p>
     @endif
-    <p class="inline-hint">Para Faixa de Preco use formato min|max. Exemplo: 200000|350000 ou 500001|</p>
+    <p class="inline-hint">Para Faixa de Preço use formato min|max. Exemplo: 200000|350000 ou 500001|</p>
 </section>
 
 <div class="admin-form-actions">
-    <button type="submit" class="btn btn-primary">{{ $editing ? 'Salvar alteracoes' : 'Criar opcao' }}</button>
+    <button type="submit" class="btn btn-primary">{{ $editing ? 'Salvar alterações' : 'Criar opção' }}</button>
 </div>

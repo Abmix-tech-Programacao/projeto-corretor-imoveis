@@ -10,9 +10,9 @@
     @php
         $adminNav = [
             ['route' => 'admin.dashboard', 'pattern' => 'admin.dashboard', 'label' => 'Dashboard', 'hint' => 'Resumo geral'],
-            ['route' => 'admin.properties.index', 'pattern' => 'admin.properties.*', 'label' => 'Imoveis', 'hint' => 'Cadastro e edicao'],
-            ['route' => 'admin.locations.index', 'pattern' => 'admin.locations.*', 'label' => 'Localizacoes', 'hint' => 'Hierarquia de regioes'],
-            ['route' => 'admin.filter-options.index', 'pattern' => 'admin.filter-options.*', 'label' => 'Filtros', 'hint' => 'Opcoes do site'],
+            ['route' => 'admin.properties.index', 'pattern' => 'admin.properties.*', 'label' => 'Imóveis', 'hint' => 'Cadastro e edição'],
+            ['route' => 'admin.locations.index', 'pattern' => 'admin.locations.*', 'label' => 'Localizações', 'hint' => 'Hierarquia de regiões'],
+            ['route' => 'admin.filter-options.index', 'pattern' => 'admin.filter-options.*', 'label' => 'Filtros', 'hint' => 'Opções do site'],
             ['route' => 'admin.leads.index', 'pattern' => 'admin.leads.*', 'label' => 'Leads', 'hint' => 'Contatos recebidos'],
         ];
     @endphp
@@ -23,7 +23,7 @@
                 <span>CN</span>
                 <div>
                     <strong>Painel Chave na Mão</strong>
-                    <small>Gestao simples de imoveis</small>
+                    <small>Gestão simples de imóveis</small>
                 </div>
             </a>
 

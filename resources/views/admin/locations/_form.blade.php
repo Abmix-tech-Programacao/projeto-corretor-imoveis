@@ -4,7 +4,7 @@
 
 <section class="admin-form-section">
     <div class="admin-form-section-head">
-        <h2>Dados da localizacao</h2>
+        <h2>Dados da localização</h2>
         <p>Crie cidades e subdivisoes para o filtro do site.</p>
     </div>
 
@@ -15,7 +15,7 @@
         </label>
 
         <label>
-            Nivel pai (opcional)
+            Nível pai (opcional)
             <select name="parent_id">
                 <option value="">Sem pai (cidade)</option>
                 @foreach ($parentOptions as $option)
@@ -38,5 +38,5 @@
 </section>
 
 <div class="admin-form-actions">
-    <button type="submit" class="btn btn-primary">{{ $editing ? 'Salvar alteracoes' : 'Criar localizacao' }}</button>
+    <button type="submit" class="btn btn-primary">{{ $editing ? 'Salvar alterações' : 'Criar localização' }}</button>
 </div>

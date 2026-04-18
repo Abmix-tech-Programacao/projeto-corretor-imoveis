@@ -58,7 +58,12 @@ class PropertyController extends Controller
      */
     public function store(StorePropertyRequest $request): RedirectResponse
     {
-        $data = $this->preparePayload($request->validated(), $request->boolean('is_featured'), $request->boolean('is_published'));
+        $data = $this->preparePayload(
+            $request->validated(),
+            $request->boolean('is_featured'),
+            $request->boolean('is_published'),
+            $request->boolean('price_on_request')
+        );
 
         if ($request->hasFile('featured_image_upload')) {
             $data['featured_image'] = $this->storeUploadedImage($request->file('featured_image_upload'), 'properties/cover');
@@ -115,7 +120,12 @@ class PropertyController extends Controller
      */
     public function update(UpdatePropertyRequest $request, Property $property): RedirectResponse
     {
-        $data = $this->preparePayload($request->validated(), $request->boolean('is_featured'), $request->boolean('is_published'));
+        $data = $this->preparePayload(
+            $request->validated(),
+            $request->boolean('is_featured'),
+            $request->boolean('is_published'),
+            $request->boolean('price_on_request')
+        );
 
         if ($request->hasFile('featured_image_upload')) {
             $this->deleteIfInternalImage($property->featured_image);
@@ -156,7 +166,12 @@ class PropertyController extends Controller
      * @param array<string, mixed> $validated
      * @return array<string, mixed>
      */
-    private function preparePayload(array $validated, bool $isFeatured, bool $isPublished): array
+    private function preparePayload(
+        array $validated,
+        bool $isFeatured,
+        bool $isPublished,
+        bool $priceOnRequest
+    ): array
     {
         $features = $this->normalizeFeatureText($validated['features_text'] ?? null);
         $locationId = isset($validated['location_id']) ? (int) $validated['location_id'] : null;
@@ -176,7 +191,7 @@ class PropertyController extends Controller
             'location_id' => $locationId,
             'neighborhood' => $manualNeighborhood !== '' ? $manualNeighborhood : ($locationContext['neighborhood'] ?? null),
             'address' => $validated['address'] ?? null,
-            'price' => $validated['price'] ?? null,
+            'price' => $priceOnRequest ? null : ($validated['price'] ?? null),
             'bedrooms' => $validated['bedrooms'],
             'bathrooms' => $validated['bathrooms'],
             'parking_spaces' => $validated['parking_spaces'],

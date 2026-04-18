@@ -6,18 +6,18 @@
     <section class="admin-header">
         <div>
             <h1>Dashboard</h1>
-            <p>Visao geral rapida do que entrou no sistema.</p>
+            <p>Visão geral rápida do que entrou no sistema.</p>
         </div>
-        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary">Novo imovel</a>
+        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary">Novo imóvel</a>
     </section>
 
     <section class="metric-grid">
         <article>
-            <small>Total de imoveis</small>
+            <small>Total de imóveis</small>
             <strong>{{ $propertyCount }}</strong>
         </article>
         <article>
-            <small>Imoveis publicados</small>
+            <small>Imóveis publicados</small>
             <strong>{{ $publishedCount }}</strong>
         </article>
         <article>
@@ -30,7 +30,7 @@
         <article class="admin-card">
             <div class="admin-card-head">
                 <h2>Leads recentes</h2>
-                <small>Ultimos contatos recebidos no site</small>
+                <small>Últimos contatos recebidos no site</small>
             </div>
             <div class="table-wrap">
                 <table>
@@ -39,7 +39,7 @@
                             <th>Data</th>
                             <th>Nome</th>
                             <th>Telefone</th>
-                            <th>Imovel</th>
+                            <th>Imóvel</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,8 +60,8 @@
 
         <article class="admin-card">
             <div class="admin-card-head">
-                <h2>Imoveis recentes</h2>
-                <small>Ultimos cadastrados no painel</small>
+                <h2>Imóveis recentes</h2>
+                <small>Últimos cadastrados no painel</small>
             </div>
             <ul class="simple-list">
                 @forelse ($recentProperties as $property)
@@ -71,8 +71,8 @@
                     </li>
                 @empty
                     <li>
-                        <strong>Nenhum imovel cadastrado.</strong>
-                        <small>Use o botao "Novo imovel" para comecar.</small>
+                        <strong>Nenhum imóvel cadastrado.</strong>
+                        <small>Use o botão "Novo imóvel" para começar.</small>
                     </li>
                 @endforelse
             </ul>

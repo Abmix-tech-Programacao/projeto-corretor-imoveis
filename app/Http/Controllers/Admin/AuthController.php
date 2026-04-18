@@ -27,7 +27,7 @@ class AuthController extends Controller
         ]);
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
-            return back()->withErrors(['email' => 'Credenciais invalidas.'])->onlyInput('email');
+            return back()->withErrors(['email' => 'Credenciais inválidas.'])->onlyInput('email');
         }
 
         $request->session()->regenerate();
@@ -35,7 +35,7 @@ class AuthController extends Controller
         if (! Auth::user()?->is_admin) {
             Auth::logout();
 
-            return back()->withErrors(['email' => 'Usuario sem permissao para o painel.'])->onlyInput('email');
+            return back()->withErrors(['email' => 'Usuário sem permissão para o painel.'])->onlyInput('email');
         }
 
         return redirect()->route('admin.dashboard');

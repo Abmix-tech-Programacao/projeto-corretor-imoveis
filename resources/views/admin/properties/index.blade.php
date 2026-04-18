@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Imoveis | Painel Chave na Mão')
+@section('title', 'Imóveis | Painel Chave na Mão')
 
 @section('content')
     <section class="admin-header">
         <div>
-            <h1>Imoveis</h1>
+            <h1>Imóveis</h1>
             <p>{{ $properties->total() }} cadastro(s) encontrado(s). Edite ou publique em poucos cliques.</p>
         </div>
-        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary">Novo imovel</a>
+        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary">Novo imóvel</a>
     </section>
 
     <div class="admin-card">
@@ -17,13 +17,13 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Titulo</th>
+                        <th>Título</th>
                         <th>Menu</th>
-                        <th>Localizacao</th>
+                        <th>Localização</th>
                         <th>Cidade/Bairro</th>
-                        <th>Preco</th>
+                        <th>Preço</th>
                         <th>Status</th>
-                        <th>Acoes</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,7 +44,7 @@
                             </td>
                             <td class="actions">
                                 <a class="btn btn-ghost" href="{{ route('admin.properties.edit', $property) }}">Editar</a>
-                                <form action="{{ route('admin.properties.destroy', $property) }}" method="POST" onsubmit="return confirm('Remover este imovel?')">
+                                <form action="{{ route('admin.properties.destroy', $property) }}" method="POST" onsubmit="return confirm('Remover este imóvel?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit">Excluir</button>
@@ -52,7 +52,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="8">Nenhum imovel cadastrado.</td></tr>
+                        <tr><td colspan="8">Nenhum imóvel cadastrado.</td></tr>
                     @endforelse
                 </tbody>
             </table>

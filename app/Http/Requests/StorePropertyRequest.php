@@ -60,6 +60,7 @@ class StorePropertyRequest extends FormRequest
             'neighborhood' => ['nullable', 'string', 'max:120'],
             'address' => ['nullable', 'string', 'max:190'],
             'price' => ['nullable', 'numeric', 'min:0'],
+            'price_on_request' => ['nullable', 'boolean'],
             'bedrooms' => ['required', 'integer', 'min:0', 'max:20'],
             'bathrooms' => ['required', 'integer', 'min:0', 'max:20'],
             'parking_spaces' => ['required', 'integer', 'min:0', 'max:20'],

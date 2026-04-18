@@ -6,9 +6,9 @@
     <section class="admin-header">
         <div>
             <h1>Filtros</h1>
-            <p>Gerencie opcoes exibidas no site e no menu.</p>
+            <p>Gerencie opções exibidas no site e no menu.</p>
         </div>
-        <a href="{{ route('admin.filter-options.create') }}" class="btn btn-primary">Nova opcao</a>
+        <a href="{{ route('admin.filter-options.create') }}" class="btn btn-primary">Nova opção</a>
     </section>
 
     <div class="admin-card">
@@ -33,7 +33,7 @@
                         <th>Valor</th>
                         <th>Ordem</th>
                         <th>Status</th>
-                        <th>Acoes</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,7 +50,7 @@
                             </td>
                             <td class="actions">
                                 <a class="btn btn-ghost" href="{{ route('admin.filter-options.edit', $option) }}">Editar</a>
-                                <form action="{{ route('admin.filter-options.destroy', $option) }}" method="POST" onsubmit="return confirm('Excluir esta opcao?')">
+                                <form action="{{ route('admin.filter-options.destroy', $option) }}" method="POST" onsubmit="return confirm('Excluir esta opção?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Excluir</button>
@@ -58,7 +58,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6">Nenhuma opcao cadastrada.</td></tr>
+                        <tr><td colspan="6">Nenhuma opção cadastrada.</td></tr>
                     @endforelse
                 </tbody>
             </table>

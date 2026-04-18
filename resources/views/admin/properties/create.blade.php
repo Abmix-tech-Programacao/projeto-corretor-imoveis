@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Novo imovel | Painel Chave na Mão')
+@section('title', 'Novo imóvel | Painel Chave na Mão')
 
 @section('content')
     <section class="admin-header">
         <div>
-            <h1>Novo imovel</h1>
+            <h1>Novo imóvel</h1>
             <p>Preencha os campos abaixo para cadastrar um novo anuncio.</p>
         </div>
         <a href="{{ route('admin.properties.index') }}" class="btn btn-ghost">Voltar para lista</a>

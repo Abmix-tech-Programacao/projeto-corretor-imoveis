@@ -2,21 +2,22 @@
     $editing = isset($property);
     $selectedLocationId = (string) old('location_id', $property->location_id ?? '');
     $cityOptions = collect($locationTree ?? [])->filter(fn (array $node): bool => ((int) ($node['depth'] ?? 0)) === 0)->values();
+    $priceOnRequestChecked = old('price_on_request', isset($property) ? !filled($property->price) : false);
 @endphp
 
 <section class="admin-form-section">
     <div class="admin-form-section-head">
         <h2>Dados principais</h2>
-        <p>Preencha os dados basicos do imovel para publicacao.</p>
+        <p>Preencha os dados básicos do imóvel para publicação.</p>
     </div>
 
     <div class="form-grid">
         <label>
-            Titulo
+            Título
             <input type="text" name="title" value="{{ old('title', $property->title ?? '') }}" required>
         </label>
         <label>
-            Codigo
+            Código
             <input type="text" name="code" value="{{ old('code', $property->code ?? '') }}" required>
         </label>
         <label>
@@ -69,18 +70,18 @@
             >
         </label>
         <label>
-            Bairro / Regiao
+            Bairro / Região
             <select data-property-neighborhood-select>
                 <option value="">Selecione</option>
             </select>
-            <small class="inline-hint">Mostra apenas bairros e regioes da cidade selecionada.</small>
+            <small class="inline-hint">Mostra apenas bairros e regiões da cidade selecionada.</small>
         </label>
         <label>
             Estado
             <input type="text" name="state" value="{{ old('state', $property->state ?? 'SP') }}" maxlength="2" required>
         </label>
         <label>
-            Cidade (automatica)
+            Cidade (automática)
             <input
                 type="text"
                 name="city"
@@ -97,18 +98,22 @@
                 value="{{ old('neighborhood', $property->neighborhood ?? '') }}"
                 data-property-neighborhood-preview
             >
-            <small class="inline-hint">Preenchido automaticamente pela localizacao, mas voce pode editar.</small>
+            <small class="inline-hint">Preenchido automaticamente pela localização, mas você pode editar.</small>
         </label>
         <label>
-            Endereco
+            Endereço
             <input type="text" name="address" value="{{ old('address', $property->address ?? '') }}">
         </label>
         <label>
-            Preco
-            <input type="number" step="0.01" name="price" value="{{ old('price', $property->price ?? '') }}">
+            Preço
+            <input type="number" step="0.01" name="price" value="{{ old('price', $property->price ?? '') }}" data-price-field @disabled($priceOnRequestChecked)>
+        </label>
+        <label class="checkbox-line">
+            <input type="checkbox" name="price_on_request" value="1" data-price-on-request @checked($priceOnRequestChecked)>
+            Exibir como "Preço sob consulta"
         </label>
         <label>
-            Dormitorios
+            Dormitórios
             <input type="number" name="bedrooms" min="0" value="{{ old('bedrooms', $property->bedrooms ?? 1) }}" required>
         </label>
         <label>
@@ -120,7 +125,7 @@
             <input type="number" name="parking_spaces" min="0" value="{{ old('parking_spaces', $property->parking_spaces ?? 1) }}" required>
         </label>
         <label>
-            Area (m2)
+            Área (m2)
             <input type="number" name="area" min="10" value="{{ old('area', $property->area ?? '') }}">
         </label>
         <label>
@@ -136,12 +141,12 @@
 
 <section class="admin-form-section">
     <div class="admin-form-section-head">
-        <h2>Descricao e diferenciais</h2>
-        <p>Escreva uma descricao clara e objetiva para ajudar na conversao.</p>
+        <h2>Descrição e diferenciais</h2>
+        <p>Escreva uma descrição clara e objetiva para ajudar na conversão.</p>
     </div>
 
     <label>
-        Descricao
+        Descrição
         <textarea name="description" rows="4" required>{{ old('description', $property->description ?? '') }}</textarea>
     </label>
 
@@ -154,7 +159,7 @@
 <section class="admin-form-section">
     <div class="admin-form-section-head">
         <h2>Imagens</h2>
-        <p>Voce pode usar URL ou upload de imagens.</p>
+        <p>Você pode usar URL ou upload de imagens.</p>
     </div>
 
     <div class="form-grid">
@@ -197,8 +202,8 @@
 
 <section class="admin-form-section">
     <div class="admin-form-section-head">
-        <h2>Publicacao</h2>
-        <p>Defina como o imovel aparece no site.</p>
+        <h2>Publicação</h2>
+        <p>Defina como o imóvel aparece no site.</p>
     </div>
 
     <div class="checkbox-row">
@@ -214,5 +219,5 @@
 </section>
 
 <div class="admin-form-actions">
-    <button type="submit" class="btn btn-primary">{{ $editing ? 'Salvar alteracoes' : 'Criar imovel' }}</button>
+    <button type="submit" class="btn btn-primary">{{ $editing ? 'Salvar alterações' : 'Criar imóvel' }}</button>
 </div>

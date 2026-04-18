@@ -19,7 +19,7 @@
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Telefone</th>
-                        <th>Imovel</th>
+                        <th>Imóvel</th>
                         <th>Mensagem</th>
                     </tr>
                 </thead>

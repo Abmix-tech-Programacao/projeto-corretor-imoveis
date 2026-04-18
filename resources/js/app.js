@@ -289,3 +289,20 @@ if (
     propertyNeighborhoodSelect.addEventListener('change', syncPropertyLocationPreview);
     syncPropertyLocationPreview();
 }
+
+const priceOnRequestCheckbox = document.querySelector('[data-price-on-request]');
+const priceField = document.querySelector('[data-price-field]');
+
+if (priceOnRequestCheckbox && priceField) {
+    const syncPriceField = () => {
+        const isOnRequest = priceOnRequestCheckbox.checked;
+        priceField.disabled = isOnRequest;
+
+        if (isOnRequest) {
+            priceField.value = '';
+        }
+    };
+
+    priceOnRequestCheckbox.addEventListener('change', syncPriceField);
+    syncPriceField();
+}
