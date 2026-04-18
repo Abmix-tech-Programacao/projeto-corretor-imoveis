@@ -1,8 +1,9 @@
 @php
     $editing = isset($property);
     $selectedLocationId = (string) old('location_id', $property->location_id ?? '');
+    $selectedCityLocationId = (string) old('city_location_id', '');
     $cityOptions = collect($locationTree ?? [])->filter(fn (array $node): bool => ((int) ($node['depth'] ?? 0)) === 0)->values();
-    $priceOnRequestChecked = old('price_on_request', isset($property) ? !filled($property->price) : false);
+    $priceOnRequestChecked = old('price_on_request', isset($property) ? ! filled($property->price) : false);
 @endphp
 
 <section class="admin-form-section">
@@ -55,26 +56,20 @@
         </label>
         <label>
             Cidade
-            <select data-property-city-select data-selected-location-id="{{ $selectedLocationId }}" required>
+            <select name="city_location_id" data-property-city-select data-selected-city-id="{{ $selectedCityLocationId }}" required>
                 <option value="">Selecione</option>
                 @foreach ($cityOptions as $cityOption)
                     <option value="{{ $cityOption['id'] }}">{{ $cityOption['name'] }}</option>
                 @endforeach
             </select>
-            <input
-                type="hidden"
-                name="location_id"
-                value="{{ $selectedLocationId }}"
-                data-property-location-id
-                data-property-location-tree='@json($locationTree ?? [])'
-            >
         </label>
         <label>
             Bairro / Região
-            <select data-property-neighborhood-select>
+            <select name="location_id" data-property-neighborhood-select data-selected-location-id="{{ $selectedLocationId }}">
                 <option value="">Selecione</option>
             </select>
             <small class="inline-hint">Mostra apenas bairros e regiões da cidade selecionada.</small>
+            <input type="hidden" data-property-location-tree='@json($locationTree ?? [])'>
         </label>
         <label>
             Estado

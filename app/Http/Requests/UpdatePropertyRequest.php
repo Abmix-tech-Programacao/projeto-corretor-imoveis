@@ -56,7 +56,8 @@ class UpdatePropertyRequest extends FormRequest
                         ->where('is_active', true);
                 }),
             ],
-            'location_id' => ['required', 'integer', 'exists:locations,id'],
+            'city_location_id' => ['required', 'integer', 'exists:locations,id'],
+            'location_id' => ['nullable', 'integer', 'exists:locations,id'],
             'city' => ['nullable', 'string', 'max:120'],
             'state' => ['required', 'string', 'size:2'],
             'neighborhood' => ['nullable', 'string', 'max:120'],

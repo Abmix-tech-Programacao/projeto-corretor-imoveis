@@ -174,7 +174,10 @@ class PropertyController extends Controller
     ): array
     {
         $features = $this->normalizeFeatureText($validated['features_text'] ?? null);
-        $locationId = isset($validated['location_id']) ? (int) $validated['location_id'] : null;
+        $selectedLocationId = $validated['location_id'] ?? $validated['city_location_id'] ?? null;
+        $locationId = $selectedLocationId !== null && $selectedLocationId !== ''
+            ? (int) $selectedLocationId
+            : null;
         $locationContext = LocationHierarchy::resolvePropertyContext($locationId);
         $manualCity = trim((string) ($validated['city'] ?? ''));
         $manualNeighborhood = trim((string) ($validated['neighborhood'] ?? ''));

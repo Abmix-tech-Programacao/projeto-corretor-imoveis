@@ -146,18 +146,18 @@ document.querySelectorAll('[data-location-filter]').forEach((filterElement) => {
 
 const propertyCitySelect = document.querySelector('[data-property-city-select]');
 const propertyNeighborhoodSelect = document.querySelector('[data-property-neighborhood-select]');
-const propertyLocationIdInput = document.querySelector('[data-property-location-id]');
+const propertyLocationTreeHolder = document.querySelector('[data-property-location-tree]');
 const propertyCityPreview = document.querySelector('[data-property-city-preview]');
 const propertyNeighborhoodPreview = document.querySelector('[data-property-neighborhood-preview]');
 
 if (
     propertyCitySelect &&
     propertyNeighborhoodSelect &&
-    propertyLocationIdInput &&
+    propertyLocationTreeHolder &&
     propertyCityPreview &&
     propertyNeighborhoodPreview
 ) {
-    const treeJson = propertyLocationIdInput.dataset.propertyLocationTree || '[]';
+    const treeJson = propertyLocationTreeHolder.dataset.propertyLocationTree || '[]';
     let locationTree = [];
 
     try {
@@ -167,7 +167,7 @@ if (
     }
 
     if (!Array.isArray(locationTree) || locationTree.length === 0) {
-        return;
+        locationTree = [];
     }
 
     let lastAutoNeighborhood = propertyNeighborhoodPreview.value || '';
@@ -258,7 +258,6 @@ if (
                 : city;
 
         propertyCityPreview.value = city;
-        propertyLocationIdInput.value = selectedNeighborhoodOption?.value || propertyCitySelect.value || '';
 
         const currentNeighborhood = (propertyNeighborhoodPreview.value || '').trim();
         if (currentNeighborhood === '' || currentNeighborhood === lastAutoNeighborhood) {
@@ -268,11 +267,10 @@ if (
         lastAutoNeighborhood = neighborhood;
     };
 
-    const selectedLocationId = Number(
-        propertyCitySelect.dataset.selectedLocationId || propertyLocationIdInput.value || 0
-    );
+    const selectedLocationId = Number(propertyNeighborhoodSelect.dataset.selectedLocationId || 0);
     const selectedPath = findPathById(locationTree, selectedLocationId);
-    const initialCityId = selectedPath.length > 0 ? Number(selectedPath[0].id) : 0;
+    const selectedCityId = Number(propertyCitySelect.dataset.selectedCityId || 0);
+    const initialCityId = selectedPath.length > 0 ? Number(selectedPath[0].id) : selectedCityId;
     const initialNeighborhoodId =
         selectedPath.length > 1 ? Number(selectedPath[selectedPath.length - 1].id) : null;
 
