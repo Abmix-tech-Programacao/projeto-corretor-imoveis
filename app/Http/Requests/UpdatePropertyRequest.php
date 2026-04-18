@@ -32,29 +32,45 @@ class UpdatePropertyRequest extends FormRequest
                 'required',
                 'string',
                 'max:80',
-                Rule::exists('filter_options', 'value')->where(function ($query): void {
-                    $query
-                        ->where('group_key', FilterOption::GROUP_PROPERTY_TYPE)
-                        ->where('is_active', true);
-                }),
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    $allowedFallbacks = ['Apartamento', 'Studio', 'Casa', 'Cobertura'];
+
+                    if ($this->isValidFilterOption(FilterOption::GROUP_PROPERTY_TYPE, $value, $allowedFallbacks)) {
+                        return;
+                    }
+
+                    $fail('Selecione um tipo de imóvel válido.');
+                },
             ],
             'purpose' => [
                 'required',
                 'string',
-                Rule::exists('filter_options', 'value')->where(function ($query): void {
-                    $query
-                        ->where('group_key', FilterOption::GROUP_PURPOSE)
-                        ->where('is_active', true);
-                }),
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    $allowedFallbacks = ['venda', 'aluguel'];
+
+                    if ($this->isValidFilterOption(FilterOption::GROUP_PURPOSE, $value, $allowedFallbacks)) {
+                        return;
+                    }
+
+                    $fail('Selecione uma finalidade válida.');
+                },
             ],
             'menu_category' => [
                 'nullable',
                 'string',
-                Rule::exists('filter_options', 'value')->where(function ($query): void {
-                    $query
-                        ->where('group_key', FilterOption::GROUP_MENU_CATEGORY)
-                        ->where('is_active', true);
-                }),
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    $allowedFallbacks = ['lancamento', 'breve-lancamento', 'imovel-pronto', 'para-alugar'];
+
+                    if ($value === null || trim((string) $value) === '') {
+                        return;
+                    }
+
+                    if ($this->isValidFilterOption(FilterOption::GROUP_MENU_CATEGORY, $value, $allowedFallbacks)) {
+                        return;
+                    }
+
+                    $fail('Selecione uma categoria de menu válida.');
+                },
             ],
             'city_location_id' => ['required', 'integer', 'exists:locations,id'],
             'location_id' => ['nullable', 'integer', 'exists:locations,id'],
@@ -82,5 +98,37 @@ class UpdatePropertyRequest extends FormRequest
             'is_featured' => ['nullable', 'boolean'],
             'is_published' => ['nullable', 'boolean'],
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'city_location_id.required' => 'Selecione uma cidade.',
+            'city_location_id.exists' => 'Selecione uma cidade válida.',
+            'location_id.exists' => 'Selecione um bairro/região válido.',
+            'description.min' => 'A descrição deve ter pelo menos 20 caracteres.',
+        ];
+    }
+
+    /**
+     * @param array<int, string> $fallbackValues
+     */
+    private function isValidFilterOption(string $groupKey, mixed $value, array $fallbackValues): bool
+    {
+        $normalized = trim((string) $value);
+        if ($normalized === '') {
+            return false;
+        }
+
+        $exists = FilterOption::query()
+            ->where('group_key', $groupKey)
+            ->where('is_active', true)
+            ->where('value', $normalized)
+            ->exists();
+
+        return $exists || in_array($normalized, $fallbackValues, true);
     }
 }
