@@ -767,7 +767,8 @@ textarea {
     background: rgba(255, 255, 255, 0.07);
 }
 
-.admin-brand span {
+.admin-brand-fallback,
+.admin-brand-avatar {
     background: #fff;
     color: #112039;
     width: 38px;
@@ -776,6 +777,10 @@ textarea {
     place-items: center;
     border-radius: 8px;
     font-weight: 700;
+}
+
+.admin-brand-avatar {
+    object-fit: cover;
 }
 
 .admin-sidebar nav {
@@ -995,7 +1000,8 @@ thead th {
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.admin-brand span {
+.admin-brand-fallback,
+.admin-brand-avatar {
     background: linear-gradient(145deg, #ffffff, #ebf5ff);
     color: #112039;
     width: 40px;
@@ -1004,6 +1010,10 @@ thead th {
     place-items: center;
     border-radius: 10px;
     font-weight: 700;
+}
+
+.admin-brand-avatar {
+    object-fit: cover;
 }
 
 .admin-brand small {

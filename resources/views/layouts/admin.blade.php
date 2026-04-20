@@ -8,6 +8,15 @@
 </head>
 <body class="admin-body">
     @php
+        $adminUser = auth()->user();
+        $nameParts = preg_split('/\s+/', trim((string) ($adminUser?->name ?? ''))) ?: [];
+        $initials = collect($nameParts)
+            ->filter()
+            ->map(fn (string $part): string => strtoupper(substr($part, 0, 1)))
+            ->take(2)
+            ->implode('');
+        $adminInitials = $initials !== '' ? $initials : 'CN';
+
         $adminNav = [
             ['route' => 'admin.dashboard', 'pattern' => 'admin.dashboard', 'label' => 'Dashboard', 'hint' => 'Resumo geral'],
             ['route' => 'admin.properties.index', 'pattern' => 'admin.properties.*', 'label' => 'Imoveis', 'hint' => 'Cadastro e edicao'],
@@ -22,10 +31,14 @@
     <div class="admin-shell">
         <aside class="admin-sidebar">
             <a href="{{ route('admin.dashboard') }}" class="admin-brand">
-                <span>CN</span>
+                @if (filled($adminUser?->photo_path))
+                    <img src="{{ $adminUser->photo_path }}" alt="{{ $adminUser->name }}" class="admin-brand-avatar">
+                @else
+                    <span class="admin-brand-fallback">{{ $adminInitials }}</span>
+                @endif
                 <div>
                     <strong>Painel Chave na Mao</strong>
-                    <small>{{ auth()->user()?->name }}</small>
+                    <small>{{ $adminUser?->name }}</small>
                 </div>
             </a>
 
