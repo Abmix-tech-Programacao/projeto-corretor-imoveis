@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Chave na Mão - imóveis em São Paulo e região metropolitana.">
-    <title>@yield('title', 'Chave na Mão')</title>
+    <meta name="description" content="Chave na Mao - imoveis em Sao Paulo e regiao metropolitana.">
+    <title>@yield('title', 'Chave na Mao')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -12,15 +12,18 @@
         $menuCategories = \App\Support\FilterCatalog::menuCategories();
         if ($menuCategories->isEmpty()) {
             $menuCategories = collect([
-                ['value' => 'lancamento', 'label' => 'Lançamentos'],
-                ['value' => 'breve-lancamento', 'label' => 'Breve Lançamento'],
-                ['value' => 'imovel-pronto', 'label' => 'Imóvel Pronto'],
+                ['value' => 'lancamento', 'label' => 'Lancamentos'],
+                ['value' => 'breve-lancamento', 'label' => 'Breve Lancamento'],
+                ['value' => 'imovel-pronto', 'label' => 'Imovel Pronto'],
                 ['value' => 'para-alugar', 'label' => 'Para Alugar'],
             ]);
         }
 
         $activeMenuCategory = (string) request('menu_category', '');
+        $footerBroker = $siteBroker ?? null;
+        $footerPhoneDigits = $footerBroker?->phone ? preg_replace('/\D+/', '', $footerBroker->phone) : null;
     @endphp
+
     <header class="topbar">
         <div class="container topbar-row">
             <div class="brand">
@@ -39,7 +42,7 @@
                         {{ $menuCategory['label'] }}
                     </a>
                 @endforeach
-                <a class="btn btn-primary" href="{{ route('admin.login') }}">Área admin</a>
+                <a class="btn btn-primary" href="{{ route('admin.login') }}">Area admin</a>
             </nav>
         </div>
     </header>
@@ -65,22 +68,28 @@
     <footer id="contato" class="site-footer">
         <div class="container footer-grid">
             <div>
-                <h4>Chave na Mão</h4>
-                <p>Especialista em apartamentos novos e lançamentos em São Paulo.</p>
+                <h4>Chave na Mao</h4>
+                <p>Especialista em apartamentos novos e lancamentos em Sao Paulo.</p>
             </div>
             <div>
                 <h5>Contato</h5>
                 <ul>
-                    <li><a href="tel:+5511983775679">+55 11 98377-5679</a></li>
-                    <li><a href="mailto:euclides@chavenamao.company">euclides@chavenamao.company</a></li>
-                    <li>Seg a Sáb: 08h às 20h</li>
+                    @if ($footerBroker?->phone)
+                        <li>
+                            <a href="tel:{{ $footerPhoneDigits }}">{{ $footerBroker->phone }}</a>
+                        </li>
+                    @endif
+                    @if ($footerBroker?->email)
+                        <li><a href="mailto:{{ $footerBroker->email }}">{{ $footerBroker->email }}</a></li>
+                    @endif
+                    <li>Seg a Sab: 08h as 20h</li>
                 </ul>
             </div>
             <div>
                 <h5>Links</h5>
                 <ul>
-                    <li><a href="{{ route('home') }}">Página inicial</a></li>
-                    <li><a href="{{ route('properties.index') }}">Todos os imóveis</a></li>
+                    <li><a href="{{ route('home') }}">Pagina inicial</a></li>
+                    <li><a href="{{ route('properties.index') }}">Todos os imoveis</a></li>
                     <li><a href="{{ route('admin.login') }}">Painel admin</a></li>
                 </ul>
             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use App\Models\FilterOption;
+use App\Support\BrokerResolver;
 use App\Support\FilterCatalog;
 use App\Support\LocationHierarchy;
 use Illuminate\Http\Request;
@@ -75,6 +76,7 @@ class HomeController extends Controller
             'latestProperties' => $latestProperties,
             'filters' => $filters,
             'filterOptions' => $filterOptions,
+            'siteBroker' => BrokerResolver::siteBroker(),
         ]);
     }
 }

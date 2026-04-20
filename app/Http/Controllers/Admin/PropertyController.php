@@ -7,6 +7,7 @@ use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
 use App\Models\PropertyImage;
+use App\Models\User;
 use App\Support\FilterCatalog;
 use App\Support\LocationHierarchy;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +22,7 @@ class PropertyController extends Controller
      */
     public function index(): View
     {
-        $properties = Property::query()->with('location')->latest()->paginate(20);
+        $properties = Property::query()->with(['location', 'broker'])->latest()->paginate(20);
 
         return view('admin.properties.index', [
             'properties' => $properties,
@@ -50,6 +51,7 @@ class PropertyController extends Controller
                     ['value' => 'imovel-pronto', 'label' => 'Imóvel Pronto'],
                     ['value' => 'para-alugar', 'label' => 'Para Alugar'],
                 ]),
+            'brokerUsers' => User::query()->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -62,7 +64,8 @@ class PropertyController extends Controller
             $request->validated(),
             $request->boolean('is_featured'),
             $request->boolean('is_published'),
-            $request->boolean('price_on_request')
+            $request->boolean('price_on_request'),
+            (int) $request->user()->id
         );
 
         if ($request->hasFile('featured_image_upload')) {
@@ -112,6 +115,7 @@ class PropertyController extends Controller
                     ['value' => 'imovel-pronto', 'label' => 'Imóvel Pronto'],
                     ['value' => 'para-alugar', 'label' => 'Para Alugar'],
                 ]),
+            'brokerUsers' => User::query()->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -124,7 +128,8 @@ class PropertyController extends Controller
             $request->validated(),
             $request->boolean('is_featured'),
             $request->boolean('is_published'),
-            $request->boolean('price_on_request')
+            $request->boolean('price_on_request'),
+            (int) $request->user()->id
         );
 
         if ($request->hasFile('featured_image_upload')) {
@@ -170,7 +175,8 @@ class PropertyController extends Controller
         array $validated,
         bool $isFeatured,
         bool $isPublished,
-        bool $priceOnRequest
+        bool $priceOnRequest,
+        int $fallbackBrokerId
     ): array
     {
         $features = $this->normalizeFeatureText($validated['features_text'] ?? null);
@@ -189,6 +195,7 @@ class PropertyController extends Controller
             'property_type' => $validated['property_type'],
             'purpose' => $validated['purpose'],
             'menu_category' => $validated['menu_category'] ?? null,
+            'broker_user_id' => (int) ($validated['broker_user_id'] ?? $fallbackBrokerId),
             'city' => $manualCity !== '' ? $manualCity : ($locationContext['city'] ?? null),
             'state' => Str::upper($validated['state']),
             'location_id' => $locationId,

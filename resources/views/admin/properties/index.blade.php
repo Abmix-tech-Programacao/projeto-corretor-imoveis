@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Imóveis | Painel Chave na Mão')
+@section('title', 'Imoveis | Painel Chave na Mao')
 
 @section('content')
     <section class="admin-header">
         <div>
-            <h1>Imóveis</h1>
+            <h1>Imoveis</h1>
             <p>{{ $properties->total() }} cadastro(s) encontrado(s). Edite ou publique em poucos cliques.</p>
         </div>
-        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary">Novo imóvel</a>
+        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary">Novo imovel</a>
     </section>
 
     <div class="admin-card">
@@ -17,13 +17,14 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Título</th>
+                        <th>Titulo</th>
                         <th>Menu</th>
-                        <th>Localização</th>
+                        <th>Corretor</th>
+                        <th>Localizacao</th>
                         <th>Cidade/Bairro</th>
-                        <th>Preço</th>
+                        <th>Preco</th>
                         <th>Status</th>
-                        <th>Ações</th>
+                        <th>Acoes</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +35,7 @@
                             <td>
                                 <span class="status-chip is-muted">{{ $property->menu_category ?: 'Sem menu' }}</span>
                             </td>
+                            <td>{{ $property->broker?->name ?? '-' }}</td>
                             <td>{{ $property->location?->name ?? '-' }}</td>
                             <td>{{ $property->neighborhood }} - {{ $property->city }}/{{ $property->state }}</td>
                             <td>{{ $property->formatted_price }}</td>
@@ -44,7 +46,7 @@
                             </td>
                             <td class="actions">
                                 <a class="btn btn-ghost" href="{{ route('admin.properties.edit', $property) }}">Editar</a>
-                                <form action="{{ route('admin.properties.destroy', $property) }}" method="POST" onsubmit="return confirm('Remover este imóvel?')">
+                                <form action="{{ route('admin.properties.destroy', $property) }}" method="POST" onsubmit="return confirm('Remover este imovel?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit">Excluir</button>
@@ -52,7 +54,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="8">Nenhum imóvel cadastrado.</td></tr>
+                        <tr><td colspan="9">Nenhum imovel cadastrado.</td></tr>
                     @endforelse
                 </tbody>
             </table>

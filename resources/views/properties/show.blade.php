@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
-@section('title', $property->title.' | Chave na Mão')
+@section('title', $property->title.' | Chave na Mao')
 
 @section('content')
     @php
-        $whatsMessage = rawurlencode('Olá! Tenho interesse no imóvel '.$property->title.'.');
+        $broker = $broker ?? $siteBroker ?? null;
+        $whatsMessage = rawurlencode('Ola! Tenho interesse no imovel '.$property->title.'.');
+        $whatsLink = $broker?->whatsapp_url ? $broker->whatsapp_url.'?text='.$whatsMessage : null;
         $mapQuery = trim(implode(', ', array_filter([
             $property->address,
             $property->neighborhood,
@@ -12,6 +14,7 @@
             $property->state,
         ])));
     @endphp
+
     <section class="section">
         <div class="container details-layout">
             <div class="details-main">
@@ -36,14 +39,14 @@
                 </div>
 
                 <div class="metrics">
-                    <div><strong>{{ $property->bedrooms }}</strong><small>Dormitórios</small></div>
+                    <div><strong>{{ $property->bedrooms }}</strong><small>Dormitorios</small></div>
                     <div><strong>{{ $property->bathrooms }}</strong><small>Banheiros</small></div>
                     <div><strong>{{ $property->parking_spaces }}</strong><small>Vagas</small></div>
-                    <div><strong>{{ $property->area ?: '-' }}</strong><small>Área m2</small></div>
+                    <div><strong>{{ $property->area ?: '-' }}</strong><small>Area m2</small></div>
                 </div>
 
                 <article class="content-card">
-                    <h2>Descrição</h2>
+                    <h2>Descricao</h2>
                     <p>{{ $property->description }}</p>
                 </article>
 
@@ -62,7 +65,7 @@
                     <article class="content-card">
                         <h2>Mapa</h2>
                         <iframe
-                            title="Mapa de localização"
+                            title="Mapa de localizacao"
                             loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"
                             src="https://www.openstreetmap.org/export/embed.html?bbox={{ $property->longitude - 0.01 }}%2C{{ $property->latitude - 0.01 }}%2C{{ $property->longitude + 0.01 }}%2C{{ $property->latitude + 0.01 }}&layer=mapnik&marker={{ $property->latitude }}%2C{{ $property->longitude }}">
@@ -72,7 +75,7 @@
                     <article class="content-card">
                         <h2>Mapa</h2>
                         <iframe
-                            title="Mapa por endereço"
+                            title="Mapa por endereco"
                             loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"
                             src="https://www.google.com/maps?q={{ urlencode($mapQuery) }}&output=embed">
@@ -82,21 +85,47 @@
             </div>
 
             <aside class="details-sidebar">
-                <div class="broker-inline">
-                    <small>Corretor responsável</small>
-                    <strong>Euclides</strong>
-                    <div class="broker-contact-actions">
-                        <a class="broker-contact-link is-whatsapp" href="https://wa.me/5511983775679?text={{ $whatsMessage }}" target="_blank" rel="noopener noreferrer">
-                            Falar no WhatsApp
-                        </a>
-                        <a class="broker-contact-link" href="mailto:euclides@chavenamao.company">
-                            Enviar e-mail
-                        </a>
+                @if ($broker)
+                    <div class="broker-profile-card">
+                        <div class="broker-profile-head">
+                            @if ($broker->photo_path)
+                                <img src="{{ $broker->photo_path }}" alt="{{ $broker->name }}" class="broker-profile-photo">
+                            @else
+                                <div class="broker-profile-photo is-fallback">{{ strtoupper(substr($broker->name, 0, 1)) }}</div>
+                            @endif
+                            <div>
+                                <small>{{ $broker->broker_display_title }}</small>
+                                <strong>{{ $broker->name }}</strong>
+                                @if ($broker->broker_bio)
+                                    <p>{{ $broker->broker_bio }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <ul class="broker-profile-list">
+                            @if ($broker->phone)
+                                <li><span>Telefone</span> <a href="tel:{{ preg_replace('/\D+/', '', $broker->phone) }}">{{ $broker->phone }}</a></li>
+                            @endif
+                            @if ($broker->whatsapp)
+                                <li>
+                                    <span>WhatsApp</span>
+                                    @if ($whatsLink)
+                                        <a href="{{ $whatsLink }}" target="_blank" rel="noopener noreferrer">{{ $broker->whatsapp }}</a>
+                                    @else
+                                        <strong>{{ $broker->whatsapp }}</strong>
+                                    @endif
+                                </li>
+                            @endif
+                            <li><span>E-mail</span> <a href="mailto:{{ $broker->email }}">{{ $broker->email }}</a></li>
+                            @if ($broker->creci)
+                                <li><span>CRECI</span> <strong>{{ $broker->creci }}</strong></li>
+                            @endif
+                        </ul>
                     </div>
-                </div>
+                @endif
+
                 <div class="contact-card">
                     <p class="price">{{ $property->formatted_price }}</p>
-                    <small>Código {{ $property->code }}</small>
+                    <small>Codigo {{ $property->code }}</small>
                     <form action="{{ route('leads.store') }}" method="POST" class="lead-form">
                         @csrf
                         <input type="hidden" name="property_id" value="{{ $property->id }}">
@@ -115,7 +144,7 @@
                         </label>
                         <label>
                             Mensagem
-                            <textarea name="message" rows="4">{{ old('message', 'Quero mais informações sobre este imóvel.') }}</textarea>
+                            <textarea name="message" rows="4">{{ old('message', 'Quero mais informacoes sobre este imovel.') }}</textarea>
                         </label>
                         <button class="btn btn-primary w-full" type="submit">Quero atendimento</button>
                     </form>
@@ -127,7 +156,7 @@
     <section class="section section-alt">
         <div class="container">
             <div class="section-head">
-                <h2>Imóveis relacionados</h2>
+                <h2>Imoveis relacionados</h2>
             </div>
             <div class="property-grid compact">
                 @foreach ($relatedProperties as $relatedProperty)

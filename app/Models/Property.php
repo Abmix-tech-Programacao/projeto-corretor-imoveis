@@ -22,6 +22,7 @@ class Property extends Model
         'property_type',
         'purpose',
         'menu_category',
+        'broker_user_id',
         'city',
         'state',
         'location_id',
@@ -43,6 +44,7 @@ class Property extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'broker_user_id' => 'integer',
         'location_id' => 'integer',
         'is_featured' => 'boolean',
         'is_published' => 'boolean',
@@ -66,6 +68,11 @@ class Property extends Model
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function broker(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'broker_user_id');
     }
 
     public function scopePublished(Builder $query): Builder

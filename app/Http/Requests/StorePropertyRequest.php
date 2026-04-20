@@ -4,22 +4,16 @@ namespace App\Http\Requests;
 
 use App\Models\FilterOption;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StorePropertyRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return (bool) $this->user()?->is_admin;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, array<int, string>|string>
+     * @return array<string, array<int, string|\Closure>|string>
      */
     public function rules(): array
     {
@@ -37,7 +31,7 @@ class StorePropertyRequest extends FormRequest
                         return;
                     }
 
-                    $fail('Selecione um tipo de imóvel válido.');
+                    $fail('Selecione um tipo de imovel valido.');
                 },
             ],
             'purpose' => [
@@ -50,7 +44,7 @@ class StorePropertyRequest extends FormRequest
                         return;
                     }
 
-                    $fail('Selecione uma finalidade válida.');
+                    $fail('Selecione uma finalidade valida.');
                 },
             ],
             'menu_category' => [
@@ -67,9 +61,10 @@ class StorePropertyRequest extends FormRequest
                         return;
                     }
 
-                    $fail('Selecione uma categoria de menu válida.');
+                    $fail('Selecione uma categoria de menu valida.');
                 },
             ],
+            'broker_user_id' => ['required', 'integer', 'exists:users,id'],
             'city_location_id' => ['required', 'integer', 'exists:locations,id'],
             'location_id' => ['nullable', 'integer', 'exists:locations,id'],
             'city' => ['nullable', 'string', 'max:120'],
@@ -102,10 +97,12 @@ class StorePropertyRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'broker_user_id.required' => 'Selecione o corretor responsavel.',
+            'broker_user_id.exists' => 'Selecione um corretor valido.',
             'city_location_id.required' => 'Selecione uma cidade.',
-            'city_location_id.exists' => 'Selecione uma cidade válida.',
-            'location_id.exists' => 'Selecione um bairro/região válido.',
-            'description.min' => 'A descrição deve ter pelo menos 20 caracteres.',
+            'city_location_id.exists' => 'Selecione uma cidade valida.',
+            'location_id.exists' => 'Selecione um bairro/regiao valido.',
+            'description.min' => 'A descricao deve ter pelo menos 20 caracteres.',
         ];
     }
 
@@ -115,6 +112,7 @@ class StorePropertyRequest extends FormRequest
     private function isValidFilterOption(string $groupKey, mixed $value, array $fallbackValues): bool
     {
         $normalized = trim((string) $value);
+
         if ($normalized === '') {
             return false;
         }

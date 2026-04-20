@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Imóveis | Chave na Mão')
+@section('title', 'Imoveis | Chave na Mao')
 
 @section('content')
     <section class="section">
@@ -13,7 +13,7 @@
                     @endif
                     <label>
                         Busca
-                        <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Título, bairro, cidade">
+                        <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Titulo, bairro, cidade">
                     </label>
                     @include('partials.location-selects')
                     <label>
@@ -50,7 +50,7 @@
                         </select>
                     </label>
                     <label>
-                        Tipo do Imóvel
+                        Tipo do Imovel
                         <select name="property_type">
                             <option value="">Todos</option>
                             @foreach ($filterOptions['types'] as $type)
@@ -61,7 +61,7 @@
                         </select>
                     </label>
                     <label>
-                        Faixa de Preço
+                        Faixa de Preco
                         <select name="price_range">
                             <option value="">Todas</option>
                             @foreach ($filterOptions['price_ranges'] as $rangeOption)
@@ -72,11 +72,11 @@
                         </select>
                     </label>
                     <label>
-                        Preço mínimo
+                        Preco minimo
                         <input type="number" step="1000" name="min_price" value="{{ $filters['min_price'] ?? '' }}">
                     </label>
                     <label>
-                        Preço máximo
+                        Preco maximo
                         <input type="number" step="1000" name="max_price" value="{{ $filters['max_price'] ?? '' }}">
                     </label>
                     <button type="submit" class="btn btn-primary w-full">Aplicar filtros</button>
@@ -86,31 +86,36 @@
             <div>
                 @php
                     $whatsMessage = rawurlencode('Ola! Vim pela pagina de imoveis e quero atendimento.');
+                    $whatsLink = $siteBroker?->whatsapp_url ? $siteBroker->whatsapp_url.'?text='.$whatsMessage : null;
                 @endphp
-                <div class="broker-banner">
-                    <div class="broker-banner-head">
-                        <p class="broker-banner-eyebrow">Corretor responsavel</p>
-                        <strong>Euclides</strong>
-                        <small>Atendimento rapido para compra e aluguel.</small>
+                @if ($siteBroker)
+                    <div class="broker-banner">
+                        <div class="broker-banner-head">
+                            <p class="broker-banner-eyebrow">{{ $siteBroker->broker_display_title }}</p>
+                            <strong>{{ $siteBroker->name }}</strong>
+                            <small>{{ $siteBroker->broker_bio ?: 'Atendimento rapido para compra e aluguel.' }}</small>
+                        </div>
+                        <div class="broker-contact-actions">
+                            @if ($whatsLink)
+                                <a class="broker-contact-link is-whatsapp" href="{{ $whatsLink }}" target="_blank" rel="noopener noreferrer">
+                                    Falar no WhatsApp
+                                </a>
+                            @endif
+                            <a class="broker-contact-link" href="mailto:{{ $siteBroker->email }}">
+                                Enviar e-mail
+                            </a>
+                        </div>
                     </div>
-                    <div class="broker-contact-actions">
-                        <a class="broker-contact-link is-whatsapp" href="https://wa.me/5511983775679?text={{ $whatsMessage }}" target="_blank" rel="noopener noreferrer">
-                            Falar no WhatsApp
-                        </a>
-                        <a class="broker-contact-link" href="mailto:euclides@chavenamao.company">
-                            Enviar e-mail
-                        </a>
-                    </div>
-                </div>
+                @endif
                 <div class="section-head">
-                    <h1>Imóveis disponíveis</h1>
+                    <h1>Imoveis disponiveis</h1>
                     <small>{{ $properties->total() }} resultados</small>
                 </div>
                 <div class="property-grid">
                     @forelse ($properties as $property)
                         @include('partials.property-card', ['property' => $property])
                     @empty
-                        <p>Nenhum imóvel encontrado.</p>
+                        <p>Nenhum imovel encontrado.</p>
                     @endforelse
                 </div>
                 <div class="pagination-wrap">

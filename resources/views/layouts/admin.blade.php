@@ -3,16 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Painel | Chave na Mão')</title>
+    <title>@yield('title', 'Painel | Chave na Mao')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="admin-body">
     @php
         $adminNav = [
             ['route' => 'admin.dashboard', 'pattern' => 'admin.dashboard', 'label' => 'Dashboard', 'hint' => 'Resumo geral'],
-            ['route' => 'admin.properties.index', 'pattern' => 'admin.properties.*', 'label' => 'Imóveis', 'hint' => 'Cadastro e edição'],
-            ['route' => 'admin.locations.index', 'pattern' => 'admin.locations.*', 'label' => 'Localizações', 'hint' => 'Hierarquia de regiões'],
-            ['route' => 'admin.filter-options.index', 'pattern' => 'admin.filter-options.*', 'label' => 'Filtros', 'hint' => 'Opções do site'],
+            ['route' => 'admin.properties.index', 'pattern' => 'admin.properties.*', 'label' => 'Imoveis', 'hint' => 'Cadastro e edicao'],
+            ['route' => 'admin.locations.index', 'pattern' => 'admin.locations.*', 'label' => 'Localizacoes', 'hint' => 'Hierarquia de regioes'],
+            ['route' => 'admin.filter-options.index', 'pattern' => 'admin.filter-options.*', 'label' => 'Filtros', 'hint' => 'Opcoes do site'],
+            ['route' => 'admin.users.index', 'pattern' => 'admin.users.*', 'label' => 'Usuarios', 'hint' => 'Acesso e corretores'],
+            ['route' => 'admin.profile.edit', 'pattern' => 'admin.profile.*', 'label' => 'Meu perfil', 'hint' => 'Dados e senha'],
             ['route' => 'admin.leads.index', 'pattern' => 'admin.leads.*', 'label' => 'Leads', 'hint' => 'Contatos recebidos'],
         ];
     @endphp
@@ -22,8 +24,8 @@
             <a href="{{ route('admin.dashboard') }}" class="admin-brand">
                 <span>CN</span>
                 <div>
-                    <strong>Painel Chave na Mão</strong>
-                    <small>Gestão simples de imóveis</small>
+                    <strong>Painel Chave na Mao</strong>
+                    <small>{{ auth()->user()?->name }}</small>
                 </div>
             </a>
 

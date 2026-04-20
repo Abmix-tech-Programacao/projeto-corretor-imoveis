@@ -621,6 +621,74 @@ textarea {
     padding: 0.58rem 0.7rem;
 }
 
+.broker-profile-card {
+    margin-bottom: 0.9rem;
+    padding: 0.95rem;
+    border-radius: 12px;
+    border: 1px solid #cee0f3;
+    background: linear-gradient(140deg, #f7fbff 0%, #eef6ff 100%);
+    display: grid;
+    gap: 0.75rem;
+}
+
+.broker-profile-head {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 0.7rem;
+    align-items: center;
+}
+
+.broker-profile-photo {
+    width: 78px;
+    height: 78px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: #dbe8f4;
+}
+
+.broker-profile-photo.is-fallback {
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #1e4264;
+}
+
+.broker-profile-head small {
+    color: #53708f;
+    font-size: 0.8rem;
+}
+
+.broker-profile-head strong {
+    display: block;
+    font-size: 1.1rem;
+}
+
+.broker-profile-head p {
+    margin-top: 0.2rem;
+    color: #4f6884;
+    font-size: 0.86rem;
+}
+
+.broker-profile-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+}
+
+.broker-profile-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    font-size: 0.88rem;
+}
+
+.broker-profile-list span {
+    color: #4a6583;
+    font-weight: 600;
+}
+
 .lead-form {
     margin-top: 0.9rem;
     display: grid;
@@ -1197,6 +1265,33 @@ select {
     padding: 0.52rem 0.68rem;
 }
 
+.admin-avatar-thumb,
+.admin-avatar-fallback {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+}
+
+.admin-avatar-thumb {
+    object-fit: cover;
+    border: 1px solid #d2deed;
+}
+
+.admin-avatar-fallback {
+    display: inline-grid;
+    place-items: center;
+    background: #e8f1fb;
+    color: #204267;
+    font-weight: 700;
+    border: 1px solid #d2deed;
+}
+
+.admin-avatar-preview {
+    width: 160px;
+    border-radius: 14px;
+    border: 1px solid #d2deed;
+}
+
 @media (max-width: 1080px) {
     .property-grid.compact {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1321,5 +1416,19 @@ select {
     .broker-contact-link {
         width: 100%;
         border-radius: 10px;
+    }
+
+    .broker-profile-head {
+        grid-template-columns: 1fr;
+    }
+
+    .broker-profile-photo {
+        width: 70px;
+        height: 70px;
+    }
+
+    .broker-profile-list li {
+        flex-direction: column;
+        gap: 0.12rem;
     }
 }

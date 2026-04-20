@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use App\Models\FilterOption;
+use App\Support\BrokerResolver;
 use App\Support\FilterCatalog;
 use App\Support\LocationHierarchy;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class PropertyController extends Controller
 
         $properties = Property::query()
             ->published()
-            ->with('images')
+            ->with(['images', 'broker'])
             ->filter($filters)
             ->latest()
             ->paginate(12)
@@ -67,6 +68,7 @@ class PropertyController extends Controller
             'properties' => $properties,
             'filters' => $filters,
             'filterOptions' => $filterOptions,
+            'siteBroker' => BrokerResolver::siteBroker(),
         ]);
     }
 
@@ -74,11 +76,11 @@ class PropertyController extends Controller
     {
         abort_unless($property->is_published, 404);
 
-        $property->load('images');
+        $property->load(['images', 'broker']);
 
         $relatedProperties = Property::query()
             ->published()
-            ->with('images')
+            ->with(['images', 'broker'])
             ->where('id', '!=', $property->id)
             ->where('city', $property->city)
             ->latest()
@@ -88,6 +90,8 @@ class PropertyController extends Controller
         return view('properties.show', [
             'property' => $property,
             'relatedProperties' => $relatedProperties,
+            'broker' => BrokerResolver::forProperty($property),
+            'siteBroker' => BrokerResolver::siteBroker(),
         ]);
     }
 }

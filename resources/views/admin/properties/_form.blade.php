@@ -2,6 +2,7 @@
     $editing = isset($property);
     $selectedLocationId = (string) old('location_id', $property->location_id ?? '');
     $selectedCityLocationId = (string) old('city_location_id', '');
+    $selectedBrokerUserId = (string) old('broker_user_id', $property->broker_user_id ?? auth()->id());
     $cityOptions = collect($locationTree ?? [])->filter(fn (array $node): bool => ((int) ($node['depth'] ?? 0)) === 0)->values();
     $priceOnRequestChecked = old('price_on_request', isset($property) ? ! filled($property->price) : false);
 @endphp
@@ -50,6 +51,17 @@
                 @foreach ($menuCategoryOptions as $menuOption)
                     <option value="{{ $menuOption['value'] }}" @selected(old('menu_category', $property->menu_category ?? '') === $menuOption['value'])>
                         {{ $menuOption['label'] }}
+                    </option>
+                @endforeach
+            </select>
+        </label>
+        <label>
+            Corretor responsavel
+            <select name="broker_user_id" required>
+                <option value="">Selecione</option>
+                @foreach ($brokerUsers as $brokerUser)
+                    <option value="{{ $brokerUser->id }}" @selected($selectedBrokerUserId === (string) $brokerUser->id)>
+                        {{ $brokerUser->name }}
                     </option>
                 @endforeach
             </select>
