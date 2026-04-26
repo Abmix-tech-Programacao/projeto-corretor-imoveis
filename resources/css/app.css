@@ -485,9 +485,14 @@ textarea {
 
 .details-layout {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: minmax(0, 1fr) 340px;
     gap: 1.2rem;
     align-items: start;
+}
+
+.details-main,
+.details-sidebar {
+    min-width: 0;
 }
 
 .gallery-card,
@@ -502,9 +507,11 @@ textarea {
 
 .gallery-card > img {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    max-width: 100%;
+    height: clamp(220px, 42vw, 520px);
     object-fit: cover;
     border-radius: 10px;
+    background: #e7edf6;
 }
 
 .thumb-row {
@@ -682,6 +689,11 @@ textarea {
     justify-content: space-between;
     gap: 0.8rem;
     font-size: 0.88rem;
+}
+
+.broker-profile-list a,
+.broker-profile-list strong {
+    overflow-wrap: anywhere;
 }
 
 .broker-profile-list span {
